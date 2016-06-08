@@ -19,12 +19,12 @@ ENV LOGSTASH_MAJOR_VERSION 2
 ENV LOGSTASH_MINOR_VERSION 2.3
 
 # Copy configuration template for apt
-ADD ./configuration/apt.conf_template /tmp/apt.conf_template
+ADD ./configuration/apt_template.conf /tmp/apt_template.conf
 
 # Copy configuration template for curl
 ADD ./configuration/.curlrc_template /tmp/.curlrc_template
 
-RUN sudo apt-get update && sudo apt-get install gettext-base
+RUN sudo apt-get -q update && sudo apt-get -q -y install gettext-base
 
 # Fix proxy seetings depended on the existence of the following varibales:
 # DOCKER_CONTAINER_PROXY_PROTOCOL
