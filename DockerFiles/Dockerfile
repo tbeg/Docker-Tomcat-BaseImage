@@ -18,11 +18,19 @@ ENV MD5_SUM 7972dfc3a1e9b9a78738379f7e755a11 *apache-tomcat-${TOMCAT_MINOR_VERSI
 ENV LOGSTASH_MAJOR_VERSION 2
 ENV LOGSTASH_MINOR_VERSION 2.3
 
+RUN mkdir -p /opt/config
+
 # Copy configuration template for apt
-ADD ./configuration/apt_template.conf /tmp/apt_template.conf
+ADD ./configuration/apt_template.conf /opt/config/apt_template.conf
+RUN chmod a+r /opt/config/apt_template.conf
 
 # Copy configuration template for curl
-ADD ./configuration/.curlrc_template /tmp/.curlrc_template
+ADD ./configuration/.curlrc_template /opt/config/.curlrc_template
+RUN chmod a+r /opt/config/.curlrc_template
+
+# Copy script to update the configuration
+ADD ./configuration/Fix_Proxy_Settings.sh /opt/config/Fix_Proxy_Settings.sh
+RUN chmod a+x /opt/config/Fix_Proxy_Settings.sh
 
 RUN sudo apt-get -q update && sudo apt-get -q -y install gettext-base
 
@@ -30,9 +38,8 @@ RUN sudo apt-get -q update && sudo apt-get -q -y install gettext-base
 # DOCKER_CONTAINER_PROXY_PROTOCOL
 # DOCKER_CONTAINER_PROXY_HOST
 # DOCKER_CONTAINER_PROXY_PORT
-ADD ./configuration/Fix_Proxy_Settings.sh /tmp/Fix_Proxy_Settings.sh
-RUN chmod a+x /tmp/Fix_Proxy_Settings.sh
-RUN /tmp/Fix_Proxy_Settings.sh
+
+RUN /opt/config/Fix_Proxy_Settings.sh
 
 # INSTALL LOGSTASH
 RUN curl -s -o key https://packages.elastic.co/GPG-KEY-elasticsearch

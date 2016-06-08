@@ -24,9 +24,9 @@ else
 
     # 2. Setting proxy for apt
     echo "Setting up proxy for apt ...";
-    envsubst "$DOCKER_CONTAINER_PROXY_PROTOCOL:$DOCKER_CONTAINER_PROXY_HOST:$DOCKER_CONTAINER_PROXY_PORT" < /tmp/apt_template.conf > /etc/apt/apt.conf
+    envsubst "$DOCKER_CONTAINER_PROXY_PROTOCOL:$DOCKER_CONTAINER_PROXY_HOST:$DOCKER_CONTAINER_PROXY_PORT" < /opt/config/apt_template.conf > /etc/apt/apt.conf
 
     # 3. Setting proxy for curl
     echo "Setting up proxy for curl ...";
-    envsubst "$DOCKER_CONTAINER_PROXY_PROTOCOL:$DOCKER_CONTAINER_PROXY_HOST:$DOCKER_CONTAINER_PROXY_PORT" < /tmp/.curlrc_template > ~/.curlrc
+    envsubst "$DOCKER_CONTAINER_PROXY_PROTOCOL:$DOCKER_CONTAINER_PROXY_HOST:$DOCKER_CONTAINER_PROXY_PORT" < /opt/config/.curlrc_template > ~/.curlrc
 fi
