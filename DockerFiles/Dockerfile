@@ -24,6 +24,8 @@ ADD ./configuration/apt.conf_template /tmp/apt.conf_template
 # Copy configuration template for curl
 ADD ./configuration/.curlrc_template /tmp/.curlrc_template
 
+RUN sudo apt-get update && sudo apt-get install gettext-base
+
 # Fix proxy seetings depended on the existence of the following varibales:
 # DOCKER_CONTAINER_PROXY_PROTOCOL
 # DOCKER_CONTAINER_PROXY_HOST
