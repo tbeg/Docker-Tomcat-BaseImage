@@ -34,7 +34,7 @@ RUN chmod a+x /opt/config/Fix_Proxy_Settings.sh
 
 RUN sudo apt-get -q update && sudo apt-get -q -y install gettext-base supervisor
 
-COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY ./configuration/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Fix proxy seetings depended on the existence of the following varibales:
 # DOCKER_CONTAINER_PROXY_PROTOCOL
