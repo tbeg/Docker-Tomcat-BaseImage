@@ -18,7 +18,7 @@ ENV MD5_SUM 7972dfc3a1e9b9a78738379f7e755a11 *apache-tomcat-${TOMCAT_MINOR_VERSI
 ENV LOGSTASH_MAJOR_VERSION 2
 ENV LOGSTASH_MINOR_VERSION 2.3
 
-RUN mkdir -p /opt/config
+RUN mkdir -p /opt/config /var/log/supervisor
 
 # Copy configuration template for apt
 ADD ./configuration/apt_template.conf /opt/config/apt_template.conf
@@ -32,7 +32,9 @@ RUN chmod a+r /opt/config/.curlrc_template
 ADD ./configuration/Fix_Proxy_Settings.sh /opt/config/Fix_Proxy_Settings.sh
 RUN chmod a+x /opt/config/Fix_Proxy_Settings.sh
 
-RUN sudo apt-get -q update && sudo apt-get -q -y install gettext-base
+RUN sudo apt-get -q update && sudo apt-get -q -y install gettext-base supervisor
+
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Fix proxy seetings depended on the existence of the following varibales:
 # DOCKER_CONTAINER_PROXY_PROTOCOL
@@ -63,6 +65,8 @@ ADD ./configuration/tomcat-users.xml ${CATALINA_HOME}/conf/tomcat-users.xml
 RUN sed -i -e"s/%AdminUser%/$AdminUser/" $CATALINA_HOME/conf/tomcat-users.xml
 RUN sed -i -e"s/%AdminPassword%/$AdminPassword/" $CATALINA_HOME/conf/tomcat-users.xml
 
+CMD "${CATALINA_HOME}/bin/catalina.sh" "run"
+
 EXPOSE 8080
 
-CMD "${CATALINA_HOME}/bin/catalina.sh" "run"
+CMD ["/usr/bin/supervisord"]
