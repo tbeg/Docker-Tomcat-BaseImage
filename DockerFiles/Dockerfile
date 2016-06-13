@@ -65,8 +65,6 @@ ADD ./configuration/tomcat-users.xml ${CATALINA_HOME}/conf/tomcat-users.xml
 RUN sed -i -e"s/%AdminUser%/$AdminUser/" $CATALINA_HOME/conf/tomcat-users.xml
 RUN sed -i -e"s/%AdminPassword%/$AdminPassword/" $CATALINA_HOME/conf/tomcat-users.xml
 
-CMD "${CATALINA_HOME}/bin/catalina.sh" "run"
-
 EXPOSE 8080
 
 CMD ["/usr/bin/supervisord"]
